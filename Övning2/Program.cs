@@ -5,6 +5,7 @@ namespace Ovning2
    public class Program
     {
         static bool stop = false;
+        const int GRATIS = 0;
         const int STANDARDPRIS = 120;
         const int UNGDOMSPRIS = 80;
         const int PENSIONPRIS = 90;
@@ -16,9 +17,10 @@ namespace Ovning2
             {
                 PrintMainMenuOptions();
                 string input = Console.ReadLine();
+
                 switch (input)
                 {
-                    case var d when d.Equals("0"):
+                    case "0":// var d when d.Equals("0"):
                         stop = true;
                         Console.WriteLine("Programmet avslutas.");
                         break;
@@ -67,7 +69,6 @@ namespace Ovning2
             var done = false;
             while (!done)
             {
-                var age = 0;
                 PrintMovieOptions();
                 var input = Console.ReadLine();
                 switch (input)
@@ -154,12 +155,20 @@ namespace Ovning2
                 }
                 else
                 {
+                    if (age < 5)
+                    {
+                        return GRATIS;
+                    }
                     return UNGDOMSPRIS;
                 }
             }
             else 
             {
-                return PENSIONPRIS;
+                if (age > 100)
+                {
+                    return GRATIS;
+                }
+                    return PENSIONPRIS;
             }
         }
 
@@ -176,6 +185,9 @@ namespace Ovning2
                     break;
                 case var d when d == PENSIONPRIS:
                     Console.WriteLine($"Pensonärspris: {PENSIONPRIS}kr");
+                    break;
+                case var d when d == GRATIS:
+                    Console.WriteLine($"Gratis!");
                     break;
                 default:
                     throw new Exception("PrintTicketPrice() did not find a matching case for the supplied price");
@@ -245,7 +257,7 @@ namespace Ovning2
             Console.WriteLine("Var vänlig skriv in en heltalssiffra och försök igen.");
         }
 
-
+        // Takes a string from the console, prints it ten times with a comma and space between each time on the same line.
         public static void RepeatTenTimes()
         {
             Console.WriteLine("Skriv vad du vill i konsolen. Det kommer att upprepas tio gånger.");

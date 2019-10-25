@@ -28,5 +28,24 @@ namespace Ovning2Test
 
             Assert.Equal(650, sum);
         }
+
+        [Fact]
+        public void CalculateTicketPriceCalculatesCorrectly()
+        {
+            int price = CalculateTicketPrice(55);
+            Assert.Equal(120, price);
+            price = CalculateTicketPrice(20);
+            Assert.Equal(120, price);
+            price = CalculateTicketPrice(64);
+            Assert.Equal(120, price);
+            price = CalculateTicketPrice(19);
+            Assert.Equal(80, price);
+            price = CalculateTicketPrice(100); 
+            Assert.Equal(90, price);
+            price = CalculateTicketPrice(101); 
+            Assert.Equal(0, price);
+            price = CalculateTicketPrice(3);
+            Assert.Equal(0, price);
+        }
     }
 }
