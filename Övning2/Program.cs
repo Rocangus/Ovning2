@@ -32,6 +32,7 @@ namespace Ovning2
             }
         }
 
+        // Small function that prints a message to the console when an unknown option number was selected.
         public static void UnknownOption()
         {
             Console.WriteLine("Okänt val, försök igen.");
@@ -44,10 +45,17 @@ namespace Ovning2
             Console.WriteLine("1: Biobiljettsprisräknare");
         }
 
+        // Module for calculating the price for movie tickets. Supports individual people and groups.
         public static void MovieTicketPriceCalculator()
         {
             Console.WriteLine("--- Biobiljettprisräknare ---");
             Console.WriteLine("Anger biobiljettpris beroende på angiven ålder.");
+            MovieOptionSelector();
+        }
+
+        // Called by the movie ticket price module to decide what to do.
+        public static void MovieOptionSelector()
+        {
             var done = false;
             while (!done)
             {
@@ -57,10 +65,10 @@ namespace Ovning2
                 switch (input)
                 {
                     case var d when d.Equals("1"):
-                        MovieOnePerson(age);
+                        MovieOnePerson();
                         break;
                     case var d when d.Equals("2"):
-                        MovieSeveralPersons(age);
+                        MovieSeveralPersons();
                         break;
                     case var d when d.Equals("0"):
                         done = true;
@@ -72,6 +80,7 @@ namespace Ovning2
             }
         }
 
+        // Prints the options for the movie ticket price calculator module.
         public static void PrintMovieOptions()
         {
             Console.WriteLine("1: Beräkna pris för en person");
@@ -79,18 +88,54 @@ namespace Ovning2
             Console.WriteLine("0: Tillbaka till huvudmenyn.");
         }
 
-        private static void MovieSeveralPersons(int age)
+        // Main method for the group movie ticket price calculation.
+        public static void MovieSeveralPersons()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Ange antalet personer:");
+            while (true)
+            {
+                int persons;
+                try
+                {
+                    persons = int.Parse(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    InputNotInt();
+                    continue;
+                }
+                if (persons <= 0)
+                {
+                    Console.WriteLine("Antalet personer måste vara minst 1.");
+                    continue;
+                }
+                int[] ages = GetSeveralPersonsMovieAge(persons);
+                PrintTotalTicketPriceInfo(ages);
+                return;
+            }
         }
 
-        public static void MovieOnePerson(int age)
+        // Prints the number of persons and the total price to console. Returns the sum for testability.
+        public static int PrintTotalTicketPriceInfo(int[] ages)
         {
-            age = GetMovieAgeInput();
-            int price = CalculateTicketPrice(age);
+            var sum = 0;
+            foreach(int n in ages)
+            {
+                sum += CalculateTicketPrice(n);
+            }
+            Console.WriteLine($"Antal personer: {ages.Length}\nTotalkostnad: {sum}");
+            return sum;
+        }
+
+        // Gets the age of the person to visit the movies, then calls the appropriate methods to calculate and print the ticket price.
+        public static void MovieOnePerson()
+        {
+            var age = GetOnePersonMovieAgeInput();
+            var price = CalculateTicketPrice(age);
             PrintTicketPrice(price);
         }
 
+        // Returns the appropriate ticket price for the stated age given as parameter.
         public static int CalculateTicketPrice(int age)
         {
             if(age < 65)
@@ -130,20 +175,39 @@ namespace Ovning2
         }
 
         // Gets the age for a person for the movie ticket price checker.
-        public static int GetMovieAgeInput()
+        public static int GetOnePersonMovieAgeInput()
         {
-            string input = "";
-            int age = 0;
             while (true)
             {
                 Console.WriteLine("Skriv in personens ålder:");
-                input = Console.ReadLine();
+                var input = Console.ReadLine();
                 int result = ParseMovieAgeInput(input);
                 if (result != -1)
                 {
                     return result;
                 }
             }
+        }
+        
+        // Gets age for several persons for the movie ticket price checker.
+        public static int[] GetSeveralPersonsMovieAge(int patrons)
+        {
+            var ages = new int[patrons];
+            for (var i = 0; i < patrons; i++)
+            {
+                while (true)
+                {
+                    Console.WriteLine($"Ange ålder för person {i + 1}:");
+                    var input = Console.ReadLine();
+                    var result = ParseMovieAgeInput(input);
+                    if (result != -1)
+                    {
+                        ages[i] = result;
+                        break;
+                    }
+                }
+            }
+            return ages;
         }
 
         // Parses the input string into a number. Returns -1 in case the number is negative, or the string could not be parsed as an Int32.
@@ -167,6 +231,7 @@ namespace Ovning2
             }
         }
 
+        // Prints an information message if the user did not input something convertable to an integer.
         public static void InputNotInt()
         {
             Console.WriteLine("Var vänlig skriv in en heltalssiffra och försök igen.");

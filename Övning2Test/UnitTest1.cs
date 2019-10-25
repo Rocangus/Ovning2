@@ -19,5 +19,14 @@ namespace Ovning2Test
             age = ParseMovieAgeInput("-75");
             Assert.Equal(-1, age);
         }
+
+        [Fact]
+        public void PrintTotalTicketPriceInfoGetsCorrectSum()
+        {
+            var ages = new int[] { 20, 64, 65, 19, 28, 58 };
+            var sum = PrintTotalTicketPriceInfo(ages);
+
+            Assert.Equal(650, sum);
+        }
     }
 }
