@@ -25,6 +25,9 @@ namespace Ovning2
                     case var d when d.Equals("1"):
                         MovieTicketPriceCalculator();
                         break;
+                    case var d when d.Equals("2"):
+                        RepeatTenTimes();
+                        break;
                     default:
                         UnknownOption();
                         break;
@@ -41,8 +44,9 @@ namespace Ovning2
         // Prints the available menu options.
         public static void PrintMainMenuOptions()
         {
-            Console.WriteLine("0: Avsluta programmet.");
             Console.WriteLine("1: Biobiljettsprisräknare");
+            Console.WriteLine("2: Återupprepare");
+            Console.WriteLine("0: Avsluta programmet");
         }
 
         // Module for calculating the price for movie tickets. Supports individual people and groups.
@@ -236,5 +240,18 @@ namespace Ovning2
         {
             Console.WriteLine("Var vänlig skriv in en heltalssiffra och försök igen.");
         }
+
+
+        public static void RepeatTenTimes()
+        {
+            Console.WriteLine("Skriv vad du vill i konsolen. Det kommer att upprepas tio gånger.");
+            var text = Console.ReadLine();
+            for (var i = 0; i < 9; i++)
+            {
+                Console.Write($"{text}, ");
+            }
+            Console.Write($"{text}\n");
+        }
+
     }
 }
