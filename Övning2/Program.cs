@@ -28,6 +28,9 @@ namespace Ovning2
                     case var d when d.Equals("2"):
                         RepeatTenTimes();
                         break;
+                    case var d when d.Equals("3"):
+                        PickThirdWord();
+                        break;
                     default:
                         UnknownOption();
                         break;
@@ -46,6 +49,7 @@ namespace Ovning2
         {
             Console.WriteLine("1: Biobiljettsprisräknare");
             Console.WriteLine("2: Återupprepare");
+            Console.WriteLine("3: Det tredje ordet.");
             Console.WriteLine("0: Avsluta programmet");
         }
 
@@ -253,5 +257,51 @@ namespace Ovning2
             Console.Write($"{text}\n");
         }
 
+        // Picks the third word from the user's input and prints it to console.
+        private static void PickThirdWord()
+        {
+            Console.WriteLine("Programmet ber om en mening på minst tre ord. Det tredje ordet kommer att skrivas ut på konsolen.");
+            var words = GetSentence();
+            var word = words[2];
+            Console.WriteLine(word);
+        }
+
+        // Gets a sentence from the user and re-prompts of less than three words are in the user input.
+        private static string[] GetSentence()
+        {
+            while (true)
+            {
+                Console.WriteLine("Skriv en mening med minst tre ord.");
+                var input = Console.ReadLine();
+                var temp = input.Split(' ');
+                var count = 0;
+                string[] actualWords = ValidateWords(temp, ref count);
+                if (count < 3)
+                {
+                    Console.WriteLine("För få ord, försök igen.");
+                    continue;
+                }
+                string[] words = new string[count];
+                Array.Copy(actualWords, words, count);
+                return words;
+            }
+        }
+
+        // Helps remove empty strings created by too many spaces.
+        private static string[] ValidateWords(string[] temp, ref int count)
+        {
+            var result = new string[temp.Length];
+            for (var i = 0; i < temp.Length; i++)
+            {
+                var str = temp[i];
+                if (str.Length > 0)
+                {
+                    result[count] = str;
+                    count++;
+                }
+            }
+
+            return result;
+        }
     }
 }
